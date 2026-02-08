@@ -6,23 +6,32 @@ spring:
         model: gemma3:4b
   kafka:
     bootstrap-servers: localhost:9092
-#    producer:
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      acks: all
-#      retries: 3
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: ai_messages_group
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: shared.dto.AiMessageRequest
+        spring.json.trusted.packages: "*"
+      group-id: ai_messages_group_v3
       auto-offset-reset: earliest
       enable-auto-commit: true
       auto-commit-interval: 1000
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+    properties:
+      allow.auto.create.topics: true
 
 app:
   kafka:
     topic:
       messages: ai_messages
+      answers: bank_ai_answers
 
 server:
   port: 8081
