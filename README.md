@@ -2,46 +2,46 @@
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Оглавление</summary>
+  <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">О проекте</a>
+      <a href="#about-the-project">About the Project</a>
       <ul>
-        <li><a href="#built-with">Стек</a></li>
+        <li><a href="#built-with">Tech Stack</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Быстрый старт</a>
+      <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Требования</a></li>
-        <li><a href="#installation">Установка и запуск</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation and Launch</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Использование</a></li>
-    <li><a href="#configuration">Конфигурация</a></li>
-    <li><a href="#architecture">Архитектура</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#configuration">Configuration</a></li>
+    <li><a href="#architecture">Architecture</a></li>
     <li><a href="#api">API</a></li>
-    <li><a href="#testing">Тестирование</a></li>
-    <li><a href="#roadmap">Планы</a></li>
-    <li><a href="#contact">Контакты</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
-## О проекте
+## About the Project
 
-**AI Assistant** — это микросервис-ассистент на базе Spring Boot и Ollama AI для обработки пользовательских запросов в банковской системе. Сервис работает в связке с **BankSystem**, получает вопросы через Kafka, классифицирует их с помощью AI и возвращает готовые ответы.
+**AI Assistant** is a microservice assistant based on Spring Boot and Ollama AI for processing user requests in a banking system. The service works in conjunction with **BankSystem**, receives questions through Kafka, classifies them using AI, and returns ready-made answers.
 
-Проект использует **hybrid-подход**:
-- **KeywordFinder** — быстрая классификация по ключевым словам (~30 категорий)
-- **Ollama AI** — классификация сложных/неоднозначных запросов через локальную LLM (модель `gemma3:4b`)
-- **AIResponseService** — возврат готовых шаблонных ответов
+The project uses a **hybrid approach**:
+- **KeywordFinder** — fast classification by keywords (~30 categories)
+- **Ollama AI** — classification of complex/ambiguous requests through local LLM (model `gemma3:4b`)
+- **AIResponseService** — returns ready-made template responses
 
-Это обеспечивает низкую латентность для популярных запросов и гибкость для нестандартных формулировок.
+This ensures low latency for popular requests and flexibility for non-standard formulations.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Стек
+### Tech Stack
 
 * [![Java][java-shield]][java-url]
 * [![Spring Boot][spring-boot-shield]][spring-boot-url]
@@ -51,41 +51,41 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Особенности
+### Features
 
-- **Event-driven архитектура** через Apache Kafka
-- **Гибридная классификация** (keyword matching + AI)
-- **Готовые шаблоны ответов** для 30+ типов банковских запросов
-- **Низкая латентность** за счет локальной LLM (Ollama)
-- **Request-Reply паттерн** через Kafka топики
+- **Event-driven architecture** via Apache Kafka
+- **Hybrid classification** (keyword matching + AI)
+- **Ready-made response templates** for 30+ types of banking requests
+- **Low latency** due to local LLM (Ollama)
+- **Request-Reply pattern** via Kafka topics
 
 <!-- GETTING STARTED -->
-## Быстрый старт
+## Getting Started
 
-### Требования
+### Prerequisites
 
 - **Java 21**
-- **Ollama** с загруженной моделью `gemma3:4b`
+- **Ollama** with loaded model `gemma3:4b`
 - **Apache Kafka** (running on `localhost:9092`)
-- **BankSystem** (основной микросервис) - опционально для тестирования интеграции
+- **BankSystem** (main microservice) - optional for integration testing
 
-### Установка и запуск
+### Installation and Launch
 
-#### 1. Установка Ollama и модели
+#### 1. Install Ollama and Model
 
 ```bash
-# Установите Ollama с официального сайта: https://ollama.ai
+# Install Ollama from the official website: https://ollama.ai
 
-# Загрузите модель gemma3:4b
+# Download the gemma3:4b model
 ollama pull gemma3:4b
 
-# Проверьте что Ollama запущен (по умолчанию на http://localhost:11434)
+# Check that Ollama is running (default at http://localhost:11434)
 curl http://localhost:11434
 ```
 
-#### 2. Запуск Kafka
+#### 2. Launch Kafka
 
-Если Kafka еще не запущен, используйте Docker:
+If Kafka is not yet running, use Docker:
 
 ```bash
 docker run -d \
@@ -102,83 +102,83 @@ docker run -d \
   apache/kafka:latest
 ```
 
-#### 3. Запуск приложения
+#### 3. Launch Application
 
 ```bash
-# Скомпилируйте проект
+# Compile the project
 ./gradlew build
 
-# Запустите приложение
+# Run the application
 ./gradlew bootRun
 ```
 
-Приложение запустится на порту **8081**.
+The application will start on port **8081**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
-## Использование
+## Usage
 
-### Standalone режим
+### Standalone Mode
 
-Для тестирования без Kafka можно отправить прямой HTTP запрос:
+For testing without Kafka, you can send a direct HTTP request:
 
 ```bash
-curl "http://localhost:8081/ask?question=как%20открыть%20счет"
+curl "http://localhost:8081/ask?question=how%20to%20open%20an%20account"
 ```
 
-**Ответ:**
+**Response:**
 ```
-Чтобы открыть счет:
-1. Войдите в личный кабинет
-2. Раздел 'Счета' → 'Создать счет'
-3. Выберите тип: текущий (CHECKING), сберегательный (SAVINGS) или депозитный (DEPOSIT)
-4. Выберите валюту: RUB, USD или EUR
-5. Подтвердите создание
+To open an account:
+1. Log in to your personal account
+2. Section 'Accounts' → 'Create account'
+3. Select type: checking (CHECKING), savings (SAVINGS), or deposit (DEPOSIT)
+4. Select currency: RUB, USD, or EUR
+5. Confirm creation
 
-Счет будет создан моментально с уникальным номером.
+The account will be created instantly with a unique number.
 ```
 
-### Kafka-режим (продакшн)
+### Kafka Mode (Production)
 
-Сервис автоматически:
-1. **Слушает топик** `ai_messages` (groupId: `ai_messages_group_v3`)
-2. **Получает** сообщения вида:
+The service automatically:
+1. **Listens to topic** `ai_messages` (groupId: `ai_messages_group_v3`)
+2. **Receives** messages like:
    ```json
    {
      "requestId": "uuid-123",
-     "text": "как заблокировать карту?"
+     "text": "how to block a card?"
    }
    ```
-3. **Обрабатывает** через `AIRoutingService`
-4. **Отправляет ответ** в топик `bank_ai_answers`:
+3. **Processes** through `AIRoutingService`
+4. **Sends response** to topic `bank_ai_answers`:
    ```json
    {
      "requestId": "uuid-123",
-     "text": "Блокировка карты при потере/краже:\n1. Личный кабинет → 'Мои карты'..."
+     "text": "Blocking a card in case of loss/theft:\n1. Personal account → 'My cards'..."
    }
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONFIGURATION -->
-## Конфигурация
+## Configuration
 
-Основные настройки в `application.yml`:
+Main settings in `application.yml`:
 
-| Параметр | Значение по умолчанию | Описание |
+| Parameter | Default Value | Description |
 | --- | --- | --- |
-| `spring.ai.ollama.base-url` | `http://localhost:11434` | URL Ollama сервера |
-| `spring.ai.ollama.chat.model` | `gemma3:4b` | Модель для классификации |
-| `spring.kafka.bootstrap-servers` | `localhost:9092` | Kafka брокер |
-| `app.kafka.topic.messages` | `ai_messages` | Входящий топик (запросы) |
-| `app.kafka.topic.answers` | `bank_ai_answers` | Исходящий топик (ответы) |
+| `spring.ai.ollama.base-url` | `http://localhost:11434` | Ollama server URL |
+| `spring.ai.ollama.chat.model` | `gemma3:4b` | Model for classification |
+| `spring.kafka.bootstrap-servers` | `localhost:9092` | Kafka broker |
+| `app.kafka.topic.messages` | `ai_messages` | Incoming topic (requests) |
+| `app.kafka.topic.answers` | `bank_ai_answers` | Outgoing topic (responses) |
 | `spring.kafka.consumer.group-id` | `ai_messages_group_v3` | Consumer group ID |
-| `server.port` | `8081` | Порт приложения |
+| `server.port` | `8081` | Application port |
 
-### Переменные окружения
+### Environment Variables
 
-Вы можете переопределить любые параметры через environment variables:
+You can override any parameters via environment variables:
 
 ```bash
 export SPRING_AI_OLLAMA_BASE_URL=http://ollama-server:11434
@@ -189,51 +189,51 @@ export SERVER_PORT=8082
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Архитектура
+## Architecture
 
-### Поток обработки запроса
+### Request Processing Flow
 
-1. **KeywordFinder** проверяет наличие ключевых слов:
-   - Если найдено совпадение → сразу возврат категории
-   - Если не найдено → передача в Ollama AI
+1. **KeywordFinder** checks for keywords:
+   - If match found → immediate return of category
+   - If not found → pass to Ollama AI
 
-2. **Ollama AI** (если требуется):
-   - Получает промпт с вопросом и списком категорий
-   - Классифицирует запрос (temperature=0.0 для детерминированности)
-   - Возвращает категорию
+2. **Ollama AI** (if required):
+   - Receives prompt with question and list of categories
+   - Classifies request (temperature=0.0 for determinism)
+   - Returns category
 
 3. **AIResponseService**:
-   - Получает категорию (например, `GET_ACCOUNT_INFO`)
-   - Возвращает готовый шаблонный ответ
+   - Receives category (e.g., `GET_ACCOUNT_INFO`)
+   - Returns ready-made template response
 
-### Kafka топики
+### Kafka Topics
 
-| Topic | Producer | Consumer | Назначение |
+| Topic | Producer | Consumer | Purpose |
 |------|----------|----------|------------|
-| `ai_messages` | BankSystem | AI Assistant | Запросы пользователей |
-| `bank_ai_answers` | AI Assistant | BankSystem | Ответы AI сервиса |
+| `ai_messages` | BankSystem | AI Assistant | User requests |
+| `bank_ai_answers` | AI Assistant | BankSystem | AI service responses |
 
-### Поддерживаемые категории
+### Supported Categories
 
-Сервис поддерживает 30+ категорий банковских запросов:
+The service supports 30+ categories of banking requests:
 
-**Счета:**
+**Accounts:**
 - `GET_ACCOUNT_INFO`, `GET_ACCOUNT_TYPES`, `GET_ACCOUNT_BALANCE`
 - `GET_ACCOUNT_LIMITS`, `GET_ACCOUNT_STATUS`, `GET_CURRENCIES`
 
-**Карты:**
+**Cards:**
 - `GET_CARD_ISSUE_INFO`, `GET_CARD_TYPES`, `BLOCK_CARD_INFO`
 - `UNBLOCK_CARD_INFO`, `GET_CARD_BALANCE`, `GET_CARD_LIMITS`
 
-**Транзакции:**
+**Transactions:**
 - `DEPOSIT_INFO`, `WITHDRAW_INFO`, `TRANSFER_INFO`
 - `GET_TRANSACTION_HISTORY`, `IDEMPOTENCY_INFO`, `GET_LIMITS_INFO`
 
-**Безопасность:**
+**Security:**
 - `REGISTRATION_INFO`, `LOGIN_INFO`, `LOGOUT_INFO`
 - `CHANGE_PASSWORD_INFO`, `EMAIL_CONFIRMATION_INFO`, `SECURITY_INFO`
 
-**Сервис:**
+**Service:**
 - `SYSTEM_INFO`, `WORKING_HOURS`, `FEES_INFO`, `CONTACT_INFO`
 - `MOBILE_APP_INFO`, `ESCALATE_TO_OPERATOR`
 
@@ -244,59 +244,59 @@ export SERVER_PORT=8082
 ### REST Endpoints
 
 #### GET /ask
-Прямой запрос к AI сервису (для тестирования).
+Direct request to AI service (for testing).
 
-**Параметры:**
-- `question` (query param) - текст вопроса
+**Parameters:**
+- `question` (query param) - question text
 
-**Пример:**
+**Example:**
 ```bash
-curl "http://localhost:8081/ask?question=какие%20типы%20карт%20есть"
+curl "http://localhost:8081/ask?question=what%20types%20of%20cards%20are%20there"
 ```
 
-**Ответ:**
+**Response:**
 ```
-Два типа карт:
+Two types of cards:
 
-💳 DEBIT (Дебетовая) - привязана к счету, тратите свои деньги
+💳 DEBIT - linked to account, spend your own money
 
-💳 CREDIT (Кредитная) - кредитные средства банка с возвратом
+💳 CREDIT - bank's credit funds with repayment
 
-Платежные системы: VISA, MasterCard, МИР
+Payment systems: VISA, MasterCard, MIR
 ```
 
 ### Kafka Integration
 
-#### Входящие сообщения (Topic: `ai_messages`)
+#### Incoming Messages (Topic: `ai_messages`)
 
 ```json
 {
   "requestId": "550e8400-e29b-41d4-a716-446655440000",
-  "text": "как открыть депозит?"
+  "text": "how to open a deposit?"
 }
 ```
 
-#### Исходящие сообщения (Topic: `bank_ai_answers`)
+#### Outgoing Messages (Topic: `bank_ai_answers`)
 
 ```json
 {
   "requestId": "550e8400-e29b-41d4-a716-446655440000",
-  "text": "Чтобы открыть счет:\n1. Войдите в личный кабинет\n2. Раздел 'Счета' → 'Создать счет'..."
+  "text": "To open an account:\n1. Log in to your personal account\n2. Section 'Accounts' → 'Create account'..."
 }
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- TESTING -->
-## Тестирование
+## Testing
 
 ```bash
 ./gradlew test
 ```
 
-### Ручное тестирование через Kafka
+### Manual Testing via Kafka
 
-1. Отправьте тестовое сообщение в топик `ai_messages`:
+1. Send a test message to topic `ai_messages`:
    ```bash
    docker exec -it ai_assistant_kafka /opt/kafka/bin/kafka-console-producer.sh \
      --broker-list localhost:9092 \
@@ -304,11 +304,11 @@ curl "http://localhost:8081/ask?question=какие%20типы%20карт%20ес
      --property "parse.key=true" \
      --property "key.separator=:"
    
-   # Введите (в одну строку):
-   test-key:{"requestId":"test-123","text":"как заблокировать карту"}
+   # Enter (in one line):
+   test-key:{"requestId":"test-123","text":"how to block a card"}
    ```
 
-2. Прослушайте топик `bank_ai_answers`:
+2. Listen to topic `bank_ai_answers`:
    ```bash
    docker exec -it ai_assistant_kafka /opt/kafka/bin/kafka-console-consumer.sh \
      --bootstrap-server localhost:9092 \
@@ -319,29 +319,29 @@ curl "http://localhost:8081/ask?question=какие%20типы%20карт%20ес
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
-## Планы
+## Roadmap
 
-- [ ] Добавить кэширование частых запросов (Redis)
-- [ ] Метрики и мониторинг (Prometheus + Grafana)
-- [ ] Поддержка мультиязычности (EN, RU)
-- [ ] Интеграция с векторными БД для RAG
-- [ ] Добавить rate limiting для AI запросов
-- [ ] Healthcheck endpoints для Kubernetes
+- [ ] Add caching for frequent requests (Redis)
+- [ ] Metrics and monitoring (Prometheus + Grafana)
+- [ ] Multilingual support (EN, RU)
+- [ ] Integration with vector databases for RAG
+- [ ] Add rate limiting for AI requests
+- [ ] Healthcheck endpoints for Kubernetes
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- RELATED PROJECTS -->
-## Связанные проекты
+## Related Projects
 
-**BankSystem** — основной банковский микросервис:  
+**BankSystem** — main banking microservice:  
 [https://github.com/favian1967/BankSystem](https://github.com/favian1967/BankSystem)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
-## Контакты
+## Contact
 
-Автор проекта: tg - @Rafink, x - https://x.com/Favian4747
+Project Author: tg - @Rafink, x - https://x.com/Favian4747
 
 Project Link: [https://github.com/favian1967/Ai_Assistant](https://github.com/favian1967/Ai_Assistant)
 
